@@ -5,8 +5,7 @@ var server = require('http').createServer(app);
 // http server를 socket.io server로 upgrade한다
 var io = require('socket.io')(server);
 
-// get 방식이기 때문에 브라우저에서 IP:PORT/주소 로 접속하면 각 함수를 실행한다
-
+// get 방식이기 때문에 브라우저에서 IP:PORT/주소 로 접속하면 각 함수를 실행한다. 웹에서 신호를 보낸다고 가정하는 테스트코드이다.
 app.get('/enrollSuccess', function(req, res) {
     res.sendFile(__dirname + '/index.html'); // socket 에서 중요한 부분은 아닌듯. index.html을 보여주기위한 것?
     enrollSuccess();
