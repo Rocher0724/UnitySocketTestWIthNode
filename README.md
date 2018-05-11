@@ -1,4 +1,5 @@
 # UnitySocketTestWIthNode
+유니티에서 NHN Unity Socket.io 라이브러리를 사용해서 만든 소켓
 
 이 코드를 다시볼땐
 
