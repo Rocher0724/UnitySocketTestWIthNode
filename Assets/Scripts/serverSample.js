@@ -1,3 +1,5 @@
+/*
+
 var app = require('express')();
 var server = require('http').createServer(app);
 // http server를 socket.io server로 upgrade한다
@@ -25,13 +27,16 @@ app.get('/scenarioStart', function(req, res) {
     scenarioStart();
 });
 
+// 소켓으로 메시지가 날아올때의 값 socket.id를 어딘가에 저장해놨다가 그놈한테 보내줄때 쓰면 된다.
+var id;
 
-// IP:PORT/socket 의 주소에 소켓을 만든다.  연결이되면 function 이하 구문이 실행된다.
+// IP:PORT/socket 의 주소에 소켓을 만든다. 연결이되면 function 이하 구문이 실행된다.
+// 클라이언트에서 보낼때 conn 이라는 키로 보내게되며 값인 data를 받게된다.
 var sign = io.of('/socket')
     .on('connection', function (socket) {
-
-        socket.on('conn', function (data, acks) {
-            console.log(data);
+        id = socket.id;
+        socket.on('conn', function (value, acks) {
+            console.log(value);
 
             // send 'woot' string as an ack message
             acks('true');
@@ -39,28 +44,31 @@ var sign = io.of('/socket')
 
     });
 
-server.listen(3332, function() {
-    console.log('Socket IO server listening on port 3332');
-});
-
+// 이 아래 과정에서 sign 이라는 이름의 소켓에 여러 키를 통해 값들을 보내게 된다.
+// 받는 쪽에서 키에 대한 설정이 되어있으면 받을 수 있고 없으면 받을 수 없다.
 function enrollSuccess () {
     console.log("enrollSuccess()");
-    sign.emit('enroll', 'true');
+    sign.to(id).emit('enroll', 'true');
 }
 
 function enrollFail () {
     console.log("enrollFail()");
-    sign.emit('enroll', 'false');
+    sign.to(id).emit('enroll', 'false');
 }
 
 function scenarioChange () {
     console.log("scenarioChange()");
-    sign.emit('scenarioChange', 'true');
+    sign.to(id).emit('scenarioChange', 'true');
 }
 
 var testname = "test name";
 function scenarioStart () {
     console.log("scenarioStart()");
-    sign.emit('scenarioStart', testname); // TODO test name 에 대한 기입
+    sign.to(id).emit('scenarioStart', testname); // TODO test name 에 대한 기입
 }
 
+server.listen(3332, function() {
+    console.log('Socket IO server listening on port 3332');
+});
+
+*/
