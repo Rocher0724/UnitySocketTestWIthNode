@@ -26,7 +26,8 @@ app.get('/scenarioStart', function(req, res) {
     scenarioStart();
 });
 
-// 소켓으로 메시지가 날아올때의 값 socket.id를 어딘가에 저장해놨다가 그놈한테 보내줄때 쓰면 된다.
+// 소켓으로 메시지가 날아올때의 값 socket.id를 어딘가에 저장해놨다가 그놈한테 보내줄때 쓰면 된다. fcm에서 firebaseToken 과 같은역할.
+// 차이점이 있다면 firebaseToken은 앱 재설치시 변경되는데 socket.id는 실행시마다 변경된다.
 var id;
 
 // IP:PORT/socket 의 주소에 소켓을 만든다. 연결이되면 function 이하 구문이 실행된다.
