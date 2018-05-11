@@ -26,12 +26,13 @@ app.get('/scenarioStart', function(req, res) {
 });
 
 
-// IP:PORT/socket 의 주소에 소켓을 만든다.  연결이되면 function 이하 구문이 실행된다.
+// IP:PORT/socket 의 주소에 소켓을 만든다. 연결이되면 function 이하 구문이 실행된다.
+// 클라이언트에서 보낼때 conn 이라는 키로 보내게되며 값인 data를 받게된다.
 var sign = io.of('/socket')
     .on('connection', function (socket) {
 
-        socket.on('conn', function (data, acks) {
-            console.log(data);
+        socket.on('conn', function (value, acks) {
+            console.log(value);
 
             // send 'woot' string as an ack message
             acks('true');
@@ -39,10 +40,8 @@ var sign = io.of('/socket')
 
     });
 
-server.listen(3332, function() {
-    console.log('Socket IO server listening on port 3332');
-});
-
+// 이 아래 과정에서 sign 이라는 이름의 소켓에 여러 키를 통해 값들을 보내게 된다.
+// 받는 쪽에서 키에 대한 설정이 되어있으면 받을 수 있고 없으면 받을 수 없다.
 function enrollSuccess () {
     console.log("enrollSuccess()");
     sign.emit('enroll', 'true');
@@ -64,3 +63,6 @@ function scenarioStart () {
     sign.emit('scenarioStart', testname); // TODO test name 에 대한 기입
 }
 
+server.listen(3332, function() {
+    console.log('Socket IO server listening on port 3332');
+});
